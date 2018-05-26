@@ -1,0 +1,16 @@
+version: '2'
+services:
+    myfirstjhispterapp-mongodb:
+        image: mongo:3.4.10
+        ports:
+            - "27017:27017"
+        command: mongos --configdb myfirstjhispterapp-mongodb-config
+    myfirstjhispterapp-mongodb-node:
+        build:
+            context: .
+            dockerfile: mongodb/MongoDB.Dockerfile
+        command: mongod --replSet rs1 --noprealloc --smallfiles
+    myfirstjhispterapp-mongodb-config:
+        image: mongo:3.4.10
+        container_name: myfirstjhispterapp-mongodb-config
+        command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db
